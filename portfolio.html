@@ -339,6 +339,86 @@
 
         <article class="card proj">
           <div class="meta">
+            <span class="pill">R</span>
+            <span class="pill">Regression</span>
+            <span class="pill">EDA</span>
+            <span class="pill">Forecasting</span>
+          </div>
+          <h3>Sales Performance Regression Analysis (R)</h3>
+          <figure>
+            <img src="regression.PNG" alt="Sales performance regression analysis" loading="lazy" />
+          </figure>
+          <p>
+            Modeled sales drivers with simple and multiple linear regression, showing advertising budget as the dominant predictor
+            and achieving 99.05% variance explained in the best-fit model.
+          </p>
+          <div class="kpi">
+            <span class="pill"><strong>99.05%</strong> R2</span>
+            <span class="pill"><strong>3</strong> predictors</span>
+          </div>
+          <div class="actions">
+            <a class="btn" href="Regression%20(1).pdf" download>Report (PDF)</a>
+            <a class="btn" href="regression.PNG" target="_blank" rel="noopener">Open Image</a>
+          </div>
+        </article>
+
+        <article class="card proj">
+          <div class="meta">
+            <span class="pill">AWS EC2</span>
+            <span class="pill">Apache NiFi</span>
+            <span class="pill">Snowpipe</span>
+            <span class="pill">Snowflake</span>
+            <span class="pill">Docker</span>
+          </div>
+          <h3>Real-Time Data Analytics Pipeline (AWS + NiFi + Snowflake)</h3>
+          <figure>
+            <img src="architecture.PNG" alt="Real-time data analytics pipeline architecture" loading="lazy" />
+          </figure>
+          <p>
+            Built a near real-time pipeline that generates synthetic customer data with Python (Faker), streams it via NiFi to S3,
+            auto-ingests with Snowpipe, and merges into a curated Snowflake table using SCD Type 1 every minute.
+          </p>
+          <div class="kpi">
+            <span class="pill"><strong>10,000</strong> records/run</span>
+            <span class="pill"><strong>1 min</strong> task cadence</span>
+            <span class="pill"><strong>SCD</strong> Type 1</span>
+          </div>
+          <div class="actions">
+            <a class="btn" href="Real-Time%20Data%20Streming%20using%20Apache%20Nifi%5EJ%20AWS%5EJ%20Snowpipe%5EJ%20Stream%20%5E0%20Task.pdf" download>Documentation (PDF)</a>
+            <a class="btn" href="https://github.com/Thrivikram-Kotharu/Real-Time-Data-Analytics-Pipeline-using-AWS-Apache-NiFi-and-Snowflake" target="_blank" rel="noopener">GitHub Repo</a>
+            <a class="btn" href="architecture.PNG" target="_blank" rel="noopener">Architecture Image</a>
+          </div>
+        </article>
+
+        <article class="card proj">
+          <div class="meta">
+            <span class="pill">R</span>
+            <span class="pill">Logistic Regression</span>
+            <span class="pill">Random Forest</span>
+            <span class="pill">EDA</span>
+            <span class="pill">Classification</span>
+          </div>
+          <h3>Airline Customer Satisfaction Prediction (R)</h3>
+          <figure>
+            <img src="Machine-Learning-Results-in-R-one-plot-to-rule-them-all-Part-1-Classification-Models.png" alt="Machine learning classification results in R" loading="lazy" />
+          </figure>
+          <p>
+            Analyzed 129,880 passenger records to identify satisfaction drivers, comparing logistic regression for interpretability
+            with a Random Forest model that reached 95.7% validation accuracy.
+          </p>
+          <div class="kpi">
+            <span class="pill"><strong>129,880</strong> records</span>
+            <span class="pill"><strong>95.7%</strong> accuracy</span>
+            <span class="pill"><strong>2</strong> models</span>
+          </div>
+          <div class="actions">
+            <a class="btn" href="Airline%20Customer%20Satisfaction.pdf" download>Report (PDF)</a>
+            <a class="btn" href="Airline%20Customer%20Satisfaction.Rmd" download>R Markdown (Rmd)</a>
+          </div>
+        </article>
+
+        <article class="card proj">
+          <div class="meta">
             <span class="pill">AWS Lambda</span>
             <span class="pill">CloudWatch</span>
             <span class="pill">Glue</span>
