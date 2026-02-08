@@ -66,11 +66,11 @@
     .btn{
       display:inline-flex; align-items:center; justify-content:center; gap:10px;
       padding:12px 14px;
-      border-radius:14px;
-      border:1px solid var(--border);
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.22);
       background: rgba(255,255,255,.04);
       color:var(--text);
-      box-shadow:none;
+      box-shadow: 0 6px 16px rgba(0,0,0,.25);
       transition:transform .15s ease, background .15s ease, border-color .15s ease;
       font-weight:650;
     }
@@ -80,9 +80,54 @@
       border-color: rgba(124,92,255,.55);
     }
     .btn.primary:hover{background: linear-gradient(135deg, rgba(124,92,255,1), rgba(124,92,255,.62));}
+    .btn.red{
+      background: #ef4444;
+      border-color: #ef4444;
+      color:#fff;
+    }
+    .btn.red:hover{
+      background: #dc2626;
+      border-color: #dc2626;
+    }
+    .btn.yellow{
+      background: #facc15;
+      border-color: #facc15;
+      color:#111827;
+    }
+    .btn.yellow:hover{
+      background: #eab308;
+      border-color: #eab308;
+    }
+    .btn.black{
+      background: #000000;
+      border-color: #000000;
+      color:#fff;
+    }
+    .btn.black:hover{
+      background: #0a0a0a;
+      border-color: #0a0a0a;
+    }
+    .btn.tableau{
+      background: #f28e2b;
+      border-color: #f28e2b;
+      color:#fff;
+    }
+    .btn.tableau:hover{
+      background: #de7f24;
+      border-color: #de7f24;
+    }
     .btn.green{
       background: linear-gradient(135deg, rgba(34,197,94,.90), rgba(34,197,94,.35));
       border-color: rgba(34,197,94,.5);
+    }
+    .btn.linkedin{
+      background: #0a66c2;
+      border-color: #0a66c2;
+      color:#fff;
+    }
+    .btn.linkedin:hover{
+      background: #095aa8;
+      border-color: #095aa8;
     }
 
     header.hero{padding:56px 0 26px;}
@@ -258,16 +303,17 @@
         <h1 class="h1">Building reliable services and data pipelines for production scale.</h1>
         <p class="sub">
           Software engineer with 3+ years of experience designing cloud-native services and automated data workflows using Python,
-          advanced SQL, AWS, and Apache Spark (Databricks). Proven track record delivering REST APIs, ETL pipelines, robust testing
-          (PyTest, Selenium), and performance optimizations that improve stability, reduce processing time, and lower cloud costs.
+          advanced SQL, AWS, and Apache Spark (Databricks). Analytical mindset with a proven track record delivering REST APIs, ETL
+          pipelines, robust testing (PyTest, Selenium), and performance optimizations that improve stability, reduce processing time,
+          and lower cloud costs.
         </p>
 
         <div class="cta">
-          <a class="btn primary" href="#projects">View Projects</a>
-          <a class="btn" href="Resume.pdf" download>Download Resume</a>
-          <a class="btn green" href="https://www.linkedin.com/in/thrivikramkotharu/" target="_blank" rel="noopener">LinkedIn</a>
-          <a class="btn" href="https://github.com/Thrivikram-Kotharu?tab=repositories" target="_blank" rel="noopener">GitHub</a>
-          <a class="btn" href="https://public.tableau.com/app/profile/thrivikram.kotharu/vizzes" target="_blank" rel="noopener">Tableau Public</a>
+          <a class="btn red" href="#projects">View Projects</a>
+          <a class="btn yellow" href="Resume.pdf" download>Download Resume</a>
+          <a class="btn linkedin" href="https://www.linkedin.com/in/thrivikramkotharu/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn black" href="https://github.com/Thrivikram-Kotharu?tab=repositories" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn tableau" href="https://public.tableau.com/app/profile/thrivikram.kotharu/vizzes" target="_blank" rel="noopener">Tableau Public</a>
         </div>
 
         <div class="pillrow" aria-label="Highlights">
@@ -293,7 +339,7 @@
         <div class="pillrow" style="margin-top:14px">
           <span class="pill">MS IS (Aug 2026)</span>
           <span class="pill">Ex-TCS (Oct 2021 &ndash; Aug 2024)</span>
-          <span class="pill">Tableau + Power BI</span>
+          <span class="pill">Tableau</span>
         </div>
 
         <p style="margin-top:14px">
@@ -385,8 +431,31 @@
           </div>
           <div class="actions">
             <a class="btn" href="Real-Time%20Data%20Streming%20using%20Apache%20Nifi%5EJ%20AWS%5EJ%20Snowpipe%5EJ%20Stream%20%5E0%20Task.pdf" download>Documentation (PDF)</a>
-            <a class="btn" href="https://github.com/Thrivikram-Kotharu/Real-Time-Data-Analytics-Pipeline-using-AWS-Apache-NiFi-and-Snowflake" target="_blank" rel="noopener">GitHub Repo</a>
+            <a class="btn" href="https://github.com/Thrivikram-Kotharu/Real-Time-Data-Analytics-Pipeline-using-AWS-Apache-NiFi-and-Snowflake" target="_blank" rel="noopener">github repo</a>
             <a class="btn" href="architecture.PNG" target="_blank" rel="noopener">Architecture Image</a>
+          </div>
+        </article>
+
+        <article class="card proj">
+          <div class="meta">
+            <span class="pill">Python</span>
+            <span class="pill">MySQL</span>
+            <span class="pill">Tkinter</span>
+            <span class="pill">System Design</span>
+            <span class="pill">ERD + DFD</span>
+          </div>
+          <h3>Asset Central (Sports Asset Management System)</h3>
+          <figure>
+            <img src="landing_frame%20_.png" alt="Asset Central landing screen preview" loading="lazy" />
+          </figure>
+          <p>
+            Built an asset management system for check-in/check-out workflows with a documented system design: context + level-0 DFDs,
+            an ERD covering 7 core entities (User, Role, Assets, Category, Status, Students, Transaction), and a normalized MySQL schema
+            supporting inventory, roles, and audit-ready transactions.
+          </p>
+          <div class="actions">
+            <a class="btn" href="Asset%20Central%20Project%20Report.pdf" download>Documentation (PDF)</a>
+            <a class="btn" href="https://github.com/Thrivikram-Kotharu/Asset-Central" target="_blank" rel="noopener">github repo</a>
           </div>
         </article>
 
@@ -440,8 +509,33 @@
           </div>
           <div class="actions">
             <a class="btn" href="Spotify%20Playlist%20ETL%20pipeline%20on%20AWS.pdf" download>Case Study (PDF)</a>
-            <a class="btn" href="https://github.com/Thrivikram-Kotharu/Spotify-Playlist-ETL-Pipeline-on-AWS" target="_blank" rel="noopener">GitHub Repo</a>
+            <a class="btn" href="https://github.com/Thrivikram-Kotharu/Spotify-Playlist-ETL-Pipeline-on-AWS" target="_blank" rel="noopener">github repo</a>
             <a class="btn" href="Spotify_ETL_Pipeline%20architecture.png" target="_blank" rel="noopener">Architecture Image</a>
+          </div>
+        </article>
+
+        <article class="card proj">
+          <div class="meta">
+            <span class="pill">Python</span>
+            <span class="pill">Pandas</span>
+            <span class="pill">NLP</span>
+            <span class="pill">Sentiment</span>
+            <span class="pill">Data Cleaning</span>
+          </div>
+          <h3>YouTube Comment &amp; Engagement Analysis</h3>
+          <figure>
+            <img src="youtube.png" alt="YouTube comment analysis preview" loading="lazy" />
+          </figure>
+          <p>
+            Cleaned US comments data (nulls, duplicates, bad rows), ran TextBlob polarity to classify sentiment, extracted most used
+            positive/negative words with word clouds, and ranked top 10 emojis. Combined multi-country trending datasets, mapped
+            category_id to names via JSON, and computed like/dislike/comment rates to measure audience engagement; identified
+            Music as the most liked category.
+          </p>
+          <div class="actions">
+            <a class="btn" href="Data%20Cleaning%20Guide_241007_084958%20%281%29.pdf" download>Data Cleaning (PDF)</a>
+            <a class="btn" href="Analyzing%20the%20most%20liked%20category%20and%20also%20checking%20how%20engaged%20are%20audience.pdf" download>Analysis (PDF)</a>
+            <a class="btn" href="https://github.com/Thrivikram-Kotharu/Youtube_comment_analysis-main" target="_blank" rel="noopener">github repo</a>
           </div>
         </article>
 
@@ -630,6 +724,9 @@
             <span class="pill">Performance</span>
           </div>
           <h3>On The Spot Award</h3>
+          <figure>
+            <img src="On_The_Spot_Award.PNG" alt="On The Spot Award certificate thumbnail" loading="lazy" />
+          </figure>
           <p>
             Tata Consultancy Services (TCS) | Feb 2024.
             Awarded for immediate impact and outstanding performance in analytics and data engineering delivery.
@@ -645,6 +742,9 @@
             <span class="pill">Performance</span>
           </div>
           <h3>Applause Award</h3>
+          <figure>
+            <img src="Applause_Award.PNG" alt="Applause Award certificate thumbnail" loading="lazy" />
+          </figure>
           <p>
             Tata Consultancy Services (TCS) | Jul 2023.
             Recognized for consistent high performance, collaboration, and client impact.
@@ -660,6 +760,9 @@
             <span class="pill">Team</span>
           </div>
           <h3>Star Team Award</h3>
+          <figure>
+            <img src="Star_Team_Award.PNG" alt="Star Team Award certificate thumbnail" loading="lazy" />
+          </figure>
           <p>
             Tata Consultancy Services (TCS) | Oct 2022.
             Awarded for exceptional team contribution on complex data initiatives.
@@ -675,6 +778,9 @@
             <span class="pill">Team</span>
           </div>
           <h3>Applause for Team Award</h3>
+          <figure>
+            <img src="Applause_for_Team_Award.PNG" alt="Applause for Team Award certificate thumbnail" loading="lazy" />
+          </figure>
           <p>
             Tata Consultancy Services (TCS) | Aug 2022.
             Recognized for cross-functional teamwork and execution excellence.
@@ -690,6 +796,9 @@
             <span class="pill">Team</span>
           </div>
           <h3>Best Team Award</h3>
+          <figure>
+            <img src="Best_Team_Award.PNG" alt="Best Team Award certificate thumbnail" loading="lazy" />
+          </figure>
           <p>
             Tata Consultancy Services (TCS) | Jun 2022.
             Honored for top-performing project team, meeting aggressive timelines and quality benchmarks.
@@ -755,6 +864,7 @@
           <ul class="clean">
             <li>Tableau Desktop Specialist - Tableau</li>
             <li>Google Data Analytics</li>
+            <li>AWS Certified Data Engineer - Associate</li>
           </ul>
         </div>
       </div>
