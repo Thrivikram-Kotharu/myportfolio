@@ -273,6 +273,125 @@
       .grid-3{grid-template-columns: 1fr}
       .grid-2{grid-template-columns: 1fr}
     }
+
+    /* Portfolio guide assistant */
+    .agent{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      width:320px;
+      max-width:calc(100vw - 36px);
+      background: rgba(14, 22, 38, .95);
+      border:1px solid var(--border);
+      border-radius:16px;
+      box-shadow: var(--shadow);
+      z-index:100;
+      overflow:hidden;
+    }
+    .agent-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 14px;
+      background: rgba(255,255,255,.03);
+      border-bottom:1px solid var(--border);
+    }
+    .agent-title{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-weight:700;
+      font-size:14px;
+    }
+    .agent-body{
+      max-height:360px;
+      overflow:auto;
+      padding:12px 12px 8px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .agent-msg{
+      padding:10px 12px;
+      border-radius:12px;
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      font-size:13px;
+      color:var(--text);
+    }
+    .agent-msg.user{
+      background: rgba(124,92,255,.14);
+      border-color: rgba(124,92,255,.35);
+      align-self:flex-end;
+    }
+    .agent-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      padding:0 12px 12px;
+    }
+    .agent-actions button{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .agent-actions button:hover{
+      border-color: rgba(124,92,255,.55);
+    }
+    .agent-input{
+      display:flex;
+      gap:8px;
+      padding:10px 12px 12px;
+      border-top:1px solid var(--border);
+      background: rgba(255,255,255,.02);
+    }
+    .agent-input input{
+      margin:0;
+      padding:10px 12px;
+      border-radius:10px;
+      font-size:13px;
+    }
+    .agent-input button{
+      white-space:nowrap;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(124,92,255,.55);
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(124,92,255,.55));
+      color:#fff;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .agent-toggle{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:101;
+      display:none;
+      align-items:center;
+      gap:8px;
+      border:1px solid var(--border);
+      background: rgba(11,18,32,.85);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:999px;
+      cursor:pointer;
+      box-shadow: var(--shadow);
+    }
+    .agent-min{
+      background:none;
+      border:none;
+      color:var(--muted);
+      cursor:pointer;
+      font-size:12px;
+    }
+    @media (max-width: 520px){
+      .agent{right:10px; left:10px; width:auto;}
+      .agent-toggle{right:10px;}
+    }
   </style>
 </head>
 
@@ -910,8 +1029,119 @@
     </div>
   </footer>
 
+  <div class="agent" id="agent">
+    <div class="agent-header">
+      <div class="agent-title">
+        <span class="dot" aria-hidden="true"></span>
+        Portfolio Guide
+      </div>
+      <button class="agent-min" id="agentMin" type="button">Minimize</button>
+    </div>
+    <div class="agent-body" id="agentBody" aria-live="polite">
+      <div class="agent-msg">
+        Hi! I can guide you around the portfolio and answer quick questions. Try: “Show projects” or “What skills do you have?”
+      </div>
+    </div>
+    <div class="agent-actions" id="agentActions">
+      <button type="button" data-q="Show projects">Projects</button>
+      <button type="button" data-q="What skills do you have?">Skills</button>
+      <button type="button" data-q="Show experience">Experience</button>
+      <button type="button" data-q="Show awards">Awards</button>
+      <button type="button" data-q="Show research">Research</button>
+      <button type="button" data-q="How can I contact you?">Contact</button>
+    </div>
+    <div class="agent-input">
+      <input id="agentInput" type="text" placeholder="Ask about projects, skills, or contact..." />
+      <button id="agentSend" type="button">Send</button>
+    </div>
+  </div>
+  <button class="agent-toggle" id="agentToggle" type="button">Open Guide</button>
+
   <script>
     document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+  <script>
+    (function(){
+      var agent = document.getElementById("agent");
+      var agentBody = document.getElementById("agentBody");
+      var agentInput = document.getElementById("agentInput");
+      var agentSend = document.getElementById("agentSend");
+      var agentToggle = document.getElementById("agentToggle");
+      var agentMin = document.getElementById("agentMin");
+      var agentActions = document.getElementById("agentActions");
+      var AI_ENDPOINT = "https://portfolio-assistant.tk-portfolio.workers.dev/api/assistant";
+      var history = [];
+
+      function addMsg(text, isUser){
+        var div = document.createElement("div");
+        div.className = "agent-msg" + (isUser ? " user" : "");
+        div.textContent = text;
+        agentBody.appendChild(div);
+        agentBody.scrollTop = agentBody.scrollHeight;
+      }
+
+      function goToSection(sel){
+        try{
+          var el = document.querySelector(sel);
+          if(el){ el.scrollIntoView({behavior:"smooth", block:"start"}); }
+        }catch(e){}
+      }
+
+      function runAction(action){
+        if(!action || !action.type){ return; }
+        if(action.type === "scroll_section" && action.target){
+          goToSection(action.target);
+        }
+        if(action.type === "open_url" && action.target){
+          window.open(action.target, "_blank", "noopener");
+        }
+      }
+
+      function sendToAI(q){
+        var t = (q || "").trim();
+        if(!t){ return; }
+        addMsg(t, true);
+        history.push({role:"user", content:t});
+        var payload = {message: t, history: history.slice(-6)};
+
+        fetch(AI_ENDPOINT, {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify(payload)
+        })
+        .then(function(res){ return res.json(); })
+        .then(function(data){
+          var answerText = (data && data.answer) ? data.answer : "Sorry, I couldn't answer that.";
+          addMsg(answerText, false);
+          history.push({role:"assistant", content: answerText});
+          runAction(data && data.action);
+        })
+        .catch(function(){
+          addMsg("The assistant is offline right now. Please try again in a moment.", false);
+        });
+      }
+
+      agentSend.addEventListener("click", function(){
+        sendToAI(agentInput.value);
+        agentInput.value = "";
+      });
+      agentInput.addEventListener("keydown", function(e){
+        if(e.key === "Enter"){ sendToAI(agentInput.value); agentInput.value = ""; }
+      });
+      agentActions.addEventListener("click", function(e){
+        if(e.target && e.target.dataset && e.target.dataset.q){
+          sendToAI(e.target.dataset.q);
+        }
+      });
+      agentMin.addEventListener("click", function(){
+        agent.style.display = "none";
+        agentToggle.style.display = "flex";
+      });
+      agentToggle.addEventListener("click", function(){
+        agent.style.display = "block";
+        agentToggle.style.display = "none";
+      });
+    })();
   </script>
 </body>
 </html>
