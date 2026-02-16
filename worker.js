@@ -23,6 +23,20 @@ const PORTFOLIO = {
       url: "https://public.tableau.com/views/EVRenewableEnergy/MainDashboard?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link"
     }
   ],
+  profiles: [
+    {
+      name: "LinkedIn",
+      url: "https://www.linkedin.com/in/thrivikramkotharu/"
+    },
+    {
+      name: "GitHub",
+      url: "https://github.com/Thrivikram-Kotharu?tab=repositories"
+    },
+    {
+      name: "Tableau Public",
+      url: "https://public.tableau.com/app/profile/thrivikram.kotharu/vizzes"
+    }
+  ],
   projects: [
     {
       title: "Instamart Data Warehouse & Dimensional Modeling",
@@ -108,6 +122,8 @@ function buildSystemPrompt() {
     "You are the portfolio assistant for Thrivikram Kotharu.",
     "Answer questions using only the portfolio data provided.",
     "If the user asks to open a project, dashboard, or a specific asset, select the best matching link.",
+    "If the user asks to open LinkedIn, GitHub, or Tableau Public, use the matching profile URL from the catalog.",
+    "If the user asks for a link/URL (for example: 'share linkedin link', 'give github link', 'tableau link'), return only the raw URL in answer and set action to none.",
     "If the user asks to navigate to a section, respond with a scroll_section action using the section id.",
     "If ambiguous, ask a short clarifying question and set action to none.",
     "",
@@ -151,6 +167,49 @@ function jsonResponse(body, status = 200) {
   });
 }
 
+function detectProfileRequest(message) {
+  const text = String(message || "").toLowerCase();
+  const profiles = [
+    {
+      name: "LinkedIn",
+      url: "https://www.linkedin.com/in/thrivikramkotharu/",
+      match: /\blinked\s*in\b|\blinkedin\b/
+    },
+    {
+      name: "GitHub",
+      url: "https://github.com/Thrivikram-Kotharu?tab=repositories",
+      match: /\bgit\s*hub\b|\bgithub\b/
+    },
+    {
+      name: "Tableau Public",
+      url: "https://public.tableau.com/app/profile/thrivikram.kotharu/vizzes",
+      match: /\btableau\b|\btableu\b|\btablue\b/
+    }
+  ];
+
+  const profile = profiles.find((p) => p.match.test(text));
+  if (!profile) return null;
+
+  const wantsOpen = /\b(open|visit|launch|go to|take me|navigate)\b/.test(text);
+  const wantsLink = /\b(link|url|profile)\b/.test(text);
+
+  if (wantsOpen) {
+    return {
+      answer: `Opening ${profile.name}.`,
+      action: { type: "open_url", target: profile.url }
+    };
+  }
+
+  if (wantsLink || profile.match.test(text)) {
+    return {
+      answer: profile.url,
+      action: { type: "none", target: "" }
+    };
+  }
+
+  return null;
+}
+
 export default {
   async fetch(request, env) {
     if (request.method === "OPTIONS") {
@@ -174,6 +233,11 @@ export default {
         answer: "Please enter a question about the portfolio.",
         action: { type: "none", target: "" }
       });
+    }
+
+    const profileResult = detectProfileRequest(message);
+    if (profileResult) {
+      return jsonResponse(profileResult, 200);
     }
 
     const input = [
