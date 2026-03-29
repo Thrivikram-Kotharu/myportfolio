@@ -1,0 +1,23 @@
+# Claude settings
+.claude/
+
+# VS Code
+.vs/
+
+# Wrangler / Cloudflare
+.wrangler/
+
+# Large raw & output data - not for GitHub
+New projects/altrex etl/Output/output data/
+New projects/altrex etl/raw_data/
+New projects/altrex etl/pharma_master_dataset.xlsx
+
+# Loose CSVs in altrex etl root
+New projects/altrex etl/*.csv
+
+# All zip files (raw data archives)
+*.zip
+
+# Python
+__pycache__/
+*.pyc
