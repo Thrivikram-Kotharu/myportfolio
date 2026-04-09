@@ -235,33 +235,43 @@
     .proj .actions{margin-top:auto; display:flex; gap:10px; flex-wrap:wrap;}
     .kpi{display:flex; gap:10px; flex-wrap:wrap; margin-top:4px;}
     .kpi .pill{color:var(--text); border-color: rgba(255,255,255,.14)}
-    .cat-header{
-      display:flex; align-items:center; justify-content:space-between;
-      margin:32px 0 12px; padding-bottom:10px;
+    /* ── Category tab bar ── */
+    .cat-tabs{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-bottom:20px;
+      padding-bottom:16px;
       border-bottom:1px solid var(--border);
+    }
+    .cat-tab{
+      display:inline-flex; align-items:center; gap:9px;
+      padding:10px 22px; border-radius:10px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.04);
+      color:var(--muted); font-size:13px; font-weight:650;
       cursor:pointer; user-select:none;
+      transition:background .18s, border-color .18s, color .18s, transform .15s, box-shadow .18s;
     }
-    .cat-header:first-of-type{ margin-top:4px; }
-    .cat-label{
-      font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
-      color:var(--muted); margin:0; padding:0;
+    .cat-tab:hover{
+      background:rgba(255,255,255,.09); border-color:rgba(255,255,255,.3);
+      color:var(--text); transform:translateY(-1px);
     }
-    .cat-toggle{
-      display:inline-flex; align-items:center; gap:7px;
-      background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.14);
-      border-radius:7px; padding:5px 12px; color:var(--muted);
-      font-size:12px; font-weight:600; cursor:pointer;
-      transition:background .15s, border-color .15s, color .15s;
+    .cat-tab.active{
+      background:linear-gradient(135deg,rgba(124,92,255,.95),rgba(124,92,255,.55));
+      border-color:rgba(124,92,255,.55); color:#fff;
+      box-shadow:0 4px 18px rgba(124,92,255,.25);
     }
-    .cat-toggle:hover{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.28); color:var(--text); }
-    .cat-toggle .chev{
-      display:flex; align-items:center;
-      transition:transform .38s cubic-bezier(.4,0,.2,1);
+    .cat-tab.active:hover{ transform:translateY(-1px); }
+    .tab-badge{
+      font-size:11px; font-weight:600; padding:2px 8px;
+      border-radius:999px; background:rgba(255,255,255,.16);
     }
-    .cat-toggle[aria-expanded="false"] .chev{ transform:rotate(-90deg); }
-    .cat-grid-wrap{
-      overflow:hidden;
-      transition:height .42s cubic-bezier(.4,0,.2,1), opacity .3s ease;
+    .cat-tab.active .tab-badge{ background:rgba(255,255,255,.22); }
+    /* ── Category panels ── */
+    .cat-panel{ display:none; }
+    .cat-panel.active{ display:block; animation:panelReveal .28s ease; }
+    @keyframes panelReveal{
+      from{ opacity:0; transform:translateY(8px); }
+      to  { opacity:1; transform:translateY(0);   }
     }
     /* LinkedIn preview card — replaces iframe (works everywhere) */
     .li-preview{
@@ -819,15 +829,13 @@
         <span>Case studies with impact + tech stack</span>
       </div>
 
-      <!-- ── Data Engineering ─────────────────────────────────────────── -->
-      <div class="cat-header" id="cat-de" onclick="toggleCat(this)">
-        <span class="cat-label">Data Engineering</span>
-        <button class="cat-toggle" aria-expanded="true" tabindex="-1">
-          <span class="cat-count">5 projects</span>
-          <span class="chev"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2,4 6,8 10,4"/></svg></span>
-        </button>
+      <div class="cat-tabs" id="catTabs">
+        <button class="cat-tab active" data-cat="ml">AI / ML <span class="tab-badge">4</span></button>
+        <button class="cat-tab" data-cat="de">Data Engineering <span class="tab-badge">5</span></button>
+        <button class="cat-tab" data-cat="da">Data Analytics <span class="tab-badge">5</span></button>
       </div>
-      <div class="cat-grid-wrap" id="wrap-de">
+
+      <div class="cat-panel" id="panel-de">
       <div class="grid-3">
 
         <article class="card proj">
@@ -966,17 +974,9 @@
         </article>
 
       </div>
-      </div><!-- /wrap-de -->
+      </div><!-- /panel-de -->
 
-      <!-- ── Data Analytics ─────────────────────────────────────────── -->
-      <div class="cat-header" id="cat-da" onclick="toggleCat(this)">
-        <span class="cat-label">Data Analytics</span>
-        <button class="cat-toggle" aria-expanded="true" tabindex="-1">
-          <span class="cat-count">5 projects</span>
-          <span class="chev"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2,4 6,8 10,4"/></svg></span>
-        </button>
-      </div>
-      <div class="cat-grid-wrap" id="wrap-da">
+      <div class="cat-panel" id="panel-da">
       <div class="grid-3">
 
         <article class="card proj">
@@ -1112,17 +1112,9 @@
         </article>
 
       </div>
-      </div><!-- /wrap-da -->
+      </div><!-- /panel-da -->
 
-      <!-- ── Machine Learning ─────────────────────────────────────────── -->
-      <div class="cat-header" id="cat-ml" onclick="toggleCat(this)">
-        <span class="cat-label">AI / ML</span>
-        <button class="cat-toggle" aria-expanded="true" tabindex="-1">
-          <span class="cat-count">4 projects</span>
-          <span class="chev"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="2,4 6,8 10,4"/></svg></span>
-        </button>
-      </div>
-      <div class="cat-grid-wrap" id="wrap-ml">
+      <div class="cat-panel active" id="panel-ml">
       <div class="grid-3">
 
         <article class="card proj li-card">
@@ -1242,7 +1234,7 @@
         </article>
 
       </div>
-      </div><!-- /wrap-ml -->
+      </div><!-- /panel-ml -->
     </div>
   </section>
 
@@ -1584,36 +1576,22 @@
   </script>
 
   <script>
-    /* ── Category collapse / expand ── */
-    function toggleCat(header) {
-      var btn  = header.querySelector('.cat-toggle');
-      var wrap = header.nextElementSibling; /* .cat-grid-wrap */
-      if (!btn || !wrap) return;
-
-      var isOpen = btn.getAttribute('aria-expanded') === 'true';
-
-      if (isOpen) {
-        /* collapse */
-        wrap.style.height  = wrap.scrollHeight + 'px';
-        wrap.style.opacity = '1';
-        /* force reflow so browser registers the explicit height before we animate it to 0 */
-        wrap.offsetHeight;
-        wrap.style.height  = '0';
-        wrap.style.opacity = '0';
-        btn.setAttribute('aria-expanded', 'false');
-      } else {
-        /* expand */
-        var target = wrap.scrollHeight;
-        wrap.style.height  = target + 'px';
-        wrap.style.opacity = '1';
-        btn.setAttribute('aria-expanded', 'true');
-        wrap.addEventListener('transitionend', function handler(e) {
-          if (e.propertyName !== 'height') return;
-          wrap.style.height = ''; /* remove fixed height so grid can reflow freely */
-          wrap.removeEventListener('transitionend', handler);
-        });
-      }
+    /* ── Category tab switching ── */
+    function switchCat(catId) {
+      document.querySelectorAll('.cat-tab').forEach(function(t) {
+        t.classList.toggle('active', t.dataset.cat === catId);
+      });
+      document.querySelectorAll('.cat-panel').forEach(function(p) {
+        p.classList.toggle('active', p.id === 'panel-' + catId);
+      });
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.cat-tab').forEach(function(tab) {
+        tab.addEventListener('mouseenter', function() { switchCat(tab.dataset.cat); });
+        tab.addEventListener('click',      function() { switchCat(tab.dataset.cat); });
+      });
+    });
   </script>
   <script>
     (function(){
@@ -1703,23 +1681,13 @@
       }
 
       function expandCategory(target){
-        var map = {
-          "data-engineering": { header:"cat-de", wrap:"wrap-de" },
-          "data-analytics":   { header:"cat-da", wrap:"wrap-da" },
-          "machine-learning": { header:"cat-ml", wrap:"wrap-ml" }
-        };
-        var ids = map[target];
-        if(!ids) return;
-        var header = document.getElementById(ids.header);
-        var wrap   = document.getElementById(ids.wrap);
-        if(!header || !wrap) return;
-        var btn = header.querySelector(".cat-toggle");
-        /* expand if collapsed */
-        if(btn && btn.getAttribute("aria-expanded") === "false"){
-          toggleCat(header);
-        }
+        var map = { "data-engineering":"de", "data-analytics":"da", "machine-learning":"ml" };
+        var catId = map[target];
+        if(!catId) return;
+        switchCat(catId);
         setTimeout(function(){
-          header.scrollIntoView({ behavior:"smooth", block:"start" });
+          var tabs = document.getElementById("catTabs");
+          if(tabs) tabs.scrollIntoView({ behavior:"smooth", block:"start" });
         }, 60);
       }
 
