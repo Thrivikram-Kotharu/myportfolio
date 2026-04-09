@@ -1,6 +1,6 @@
 const PORTFOLIO = {
   owner: "Thrivikram Kotharu",
-  role: "Software Developer + Data Engineer",
+  role: "Data Analyst · Software Engineer · Data Engineer",
   location: "Mount Pleasant, Michigan",
   email: "Thrivikramkotharu@gmail.com",
   phone: "+1 (989) 933-8650",
@@ -12,6 +12,26 @@ const PORTFOLIO = {
     { id: "#research", name: "Research" },
     { id: "#education", name: "Education" },
     { id: "#contact", name: "Contact" }
+  ],
+  projectCategories: [
+    {
+      name: "Data Engineering",
+      id: "data-engineering",
+      count: 5,
+      projects: ["Instamart Data Warehouse & Dimensional Modeling", "Real-Time Data Analytics Pipeline (AWS + NiFi + Snowflake)", "Pharmaceutical Pricing Analytics ETL Pipeline (Alteryx)", "Spotify Playlist ETL Pipeline (AWS)", "Asset Central (Sports Asset Management System)"]
+    },
+    {
+      name: "Data Analytics",
+      id: "data-analytics",
+      count: 5,
+      projects: ["Pharmaceutical Pricing Portfolio Analysis & Market Intelligence", "YouTube Comment & Engagement Analysis", "Jobs Data Visualization (Tableau Story)", "EV & Renewable Energy (Tableau Dashboard)", "The 2-Degree Blueprint (Climate Policy Simulator)"]
+    },
+    {
+      name: "AI / ML",
+      id: "machine-learning",
+      count: 4,
+      projects: ["AI-Powered Resume Automation (n8n)", "Portfolio AI Agent — JARVIS", "Sales Performance Regression Analysis (R)", "Airline Customer Satisfaction Prediction (R)"]
+    }
   ],
   dashboards: [
     {
@@ -43,6 +63,25 @@ const PORTFOLIO = {
     }
   ],
   projects: [
+    {
+      title: "AI-Powered Resume Automation (n8n)",
+      category: "AI / ML",
+      description: "End-to-end n8n workflow that automates resume parsing, role matching, and tailored content generation using AI nodes.",
+      tech: ["n8n", "Workflow Automation", "OpenAI", "Resume AI"],
+      links: [
+        { label: "View on LinkedIn", url: "https://www.linkedin.com/feed/update/urn:li:ugcPost:7441628992841068544/" }
+      ]
+    },
+    {
+      title: "Portfolio AI Agent — JARVIS",
+      category: "AI / ML",
+      description: "OpenAI-powered conversational AI agent deployed via Cloudflare Workers. Helps visitors navigate the portfolio, describe projects, open dashboards, and answer questions in real time.",
+      tech: ["Cloudflare Workers", "OpenAI API", "JavaScript", "AI Assistant"],
+      kpis: { projectsIndexed: 13, responseType: "real-time", deployment: "Cloudflare Workers" },
+      links: [
+        { label: "View on LinkedIn", url: "https://www.linkedin.com/feed/update/urn:li:ugcPost:7428839420528603136/" }
+      ]
+    },
     {
       title: "Instamart Data Warehouse & Dimensional Modeling",
       links: [
@@ -178,9 +217,10 @@ Your job is to help visitors explore the portfolio, find information, and naviga
 
 ## RESPONSE FORMAT (always required)
 Always respond with valid JSON:
-{ "answer": "<string>", "action": { "type": "open_url" | "scroll_section" | "none", "target": "<string>" } }
+{ "answer": "<string>", "action": { "type": "open_url" | "scroll_section" | "expand_category" | "none", "target": "<string>" } }
 - open_url: target must be an exact URL from the catalog
 - scroll_section: target must be a section id (e.g. "#skills")
+- expand_category: target must be "data-engineering", "data-analytics", or "machine-learning"
 - none: target must be ""
 
 ## STRICT ACTION RULES
@@ -194,6 +234,13 @@ NEVER fire open_url for informational questions like "what is X", "tell me about
 "go to [section]", "scroll to [section]", "navigate to [section]", "show me the [section] section"
 Examples: "go to skills", "scroll to experience"
 NEVER fire scroll_section for: "what are his skills?", "what technologies does he know?", "how do I contact him?", "tell me about his experience" - these are INFO requests, answer inline with action: none.
+
+### Use expand_category when the user asks to see a specific project category:
+"show me data engineering projects", "what data analytics projects are there?", "show machine learning work", "expand data engineering", "show the ML projects"
+- target "data-engineering" for: data engineering, ETL, pipelines, AWS projects, Alteryx, Snowflake, n8n
+- target "data-analytics" for: data analytics, Tableau, dashboards, visualizations
+- target "machine-learning" for: AI/ML, machine learning, ML, R projects, regression, classification, prediction, n8n, JARVIS, AI agent, resume automation
+This expands the collapsed category AND scrolls to it.
 
 ### Use none for everything else:
 - All greetings
@@ -241,7 +288,15 @@ Ask ONE clarifying question listing all options. action: none.
 **Out of scope:**
 Politely decline and offer what you can help with. action: none.
 
+## PROJECT CATEGORIES (projects page has 3 collapsible sections)
+- Data Engineering (5 projects): Instamart Data Warehouse, Real-Time Analytics Pipeline, Pharma ETL (Alteryx), Spotify ETL (AWS), Asset Central
+- Data Analytics (5 projects): Pharma Pricing Dashboard (Tableau), YouTube Analysis, Jobs Visualization (Tableau), EV & Renewable Energy (Tableau), 2-Degree Blueprint
+- AI / ML (4 projects): n8n Resume Automation, Portfolio AI Agent (JARVIS), Sales Regression (R), Airline Satisfaction Prediction (R)
+Each category can be expanded or collapsed by the user or by JARVIS via expand_category action.
+
 ## KEY PROJECT FACTS FOR INLINE ANSWERS
+- n8n Resume Automation: n8n workflow automating resume parsing, role matching, and AI-powered content generation (category: AI/ML)
+- JARVIS Portfolio AI Agent: OpenAI-powered conversational assistant deployed on Cloudflare Workers, indexes 13 projects, answers questions and navigates the portfolio in real time (category: AI/ML)
 - Pharma Dashboard (newest, March 2026): Tableau, 220 drugs, 109,552 records, 2023Q1-2024Q4, 6 interactive charts, -57% avg GTN gap, top drug STELARA at $25,519 NADAC, 65% of drugs have stable pricing (CV<20)
 - Alteryx ETL (newest, March 2026): Alteryx Designer Cloud, 6-phase pipeline (Ingest->Validate->Transform->Enrich->Join->Load), 4 sources (CMS ASP, Medicaid NADAC, FDA CDER, FRED PPI), 77+ tools, 109,552 output rows, 6 enrichment metrics (YoY%, rolling 4Q avg, volatility CV, GTN gap, inflation-adjusted price, GTN%). Alteryx workflow link requires Alteryx Cloud login.
 - Spotify ETL: AWS Lambda + CloudWatch triggers, 1,000+ daily records, JSON to S3 raw/processed layers, Glue catalog, Athena sub-2s queries, 100% automated
@@ -398,7 +453,7 @@ export default {
                   type: "object",
                   additionalProperties: false,
                   properties: {
-                    type: { type: "string", enum: ["open_url", "scroll_section", "none"] },
+                    type: { type: "string", enum: ["open_url", "scroll_section", "expand_category", "none"] },
                     target: { type: "string" }
                   },
                   required: ["type", "target"]
